@@ -25,7 +25,7 @@ public class EmployeeDetailActivity extends AppCompatActivity {
         Employee employee = (Employee) intent.getSerializableExtra("employee");
         binding.textViewDetailFirstName.setText("  " + employee.getFirstName());
         binding.textViewDetailLastName.setText("  " + employee.getLastName());
-        binding.textViewDetailSalary.setText("  " + employee.getSalary());
+        binding.textViewDetailSalary.setText(" S/. " + employee.getSalary());
         binding.textViewDetailEmail.setText("  " + employee.getEmail());
         binding.textViewDetailPhoneNumber.setText("  " + employee.getPhoneNumber());
 
