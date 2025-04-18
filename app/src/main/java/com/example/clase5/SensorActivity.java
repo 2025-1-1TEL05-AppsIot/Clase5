@@ -62,10 +62,6 @@ public class SensorActivity extends AppCompatActivity {
 
         Sensor mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(listener,mAccelerometer,SensorManager.SENSOR_DELAY_NORMAL);
-        //mSensorManager.registerListener(listener,mAcc,20000000);
-
-        //Sensor mGyr = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        //mSensorManager.registerListener(listener,mGyr,SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
@@ -77,18 +73,22 @@ public class SensorActivity extends AppCompatActivity {
 
     public void mostrarUbicacion(View view) {
 
-        int selfPermissionFineLocation = ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION);
-        int selfPermissionCoarseLocation = ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION);
+        int selfPermissionFineLocation = ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+        int selfPermissionCoarseLocation = ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION);
 
         if (selfPermissionFineLocation == PackageManager.PERMISSION_GRANTED &&
                 selfPermissionCoarseLocation == PackageManager.PERMISSION_GRANTED) {
 
             //tenemos permisos
-            FusedLocationProviderClient providerClient = LocationServices.getFusedLocationProviderClient(this);
+            FusedLocationProviderClient providerClient =
+                    LocationServices.getFusedLocationProviderClient(this);
             providerClient.getLastLocation().addOnSuccessListener(this, location -> {
                 if (location != null) {
-                    Log.d("msg-test-location", "latitud: " + location.getLatitude());
-                    Log.d("msg-test-location", "longitud: " + location.getLongitude());
+                    Log.d("msg-test-location",
+                            "latitud: " + location.getLatitude()
+                            + " | longitud: " + location.getLongitude());
                 }
             });
 
@@ -100,7 +100,6 @@ public class SensorActivity extends AppCompatActivity {
             });
 
         }
-
     }
 
     ActivityResultLauncher<String[]> locationPermissionLauncher = registerForActivityResult(
