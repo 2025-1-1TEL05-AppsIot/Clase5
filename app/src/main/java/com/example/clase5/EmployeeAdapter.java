@@ -39,8 +39,10 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         Employee employee = listaEmpleados.get(position);
         holder.employee = employee;
 
-        if (position % 2.0 > 0) {
-            holder.itemView.setBackgroundColor(0xF3E5F5FF);
+        if (position % 2.0 == 1) {
+            holder.binding.getRoot().setBackgroundColor(0xF3E5F5FF);
+        } else {
+            holder.binding.getRoot().setBackgroundColor(Color.WHITE); // o el color que uses normalmente
         }
 
         TextView tvFirstName = holder.binding.textViewFirstName;
