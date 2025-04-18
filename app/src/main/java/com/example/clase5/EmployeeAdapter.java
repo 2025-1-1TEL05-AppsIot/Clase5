@@ -13,9 +13,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.clase5.databinding.IrvEmployeeBinding;
 import com.example.clase5.entity.Employee;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.EmployeeViewHolder> {
 
@@ -27,8 +29,9 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     @NonNull
     @Override
     public EmployeeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(context).inflate(R.layout.irv_employee, parent, false);
-        return new EmployeeViewHolder(inflate);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        IrvEmployeeBinding binding = IrvEmployeeBinding.inflate(inflater, parent, false);
+        return new EmployeeViewHolder(binding);
     }
 
     @Override
@@ -36,19 +39,33 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         Employee employee = listaEmpleados.get(position);
         holder.employee = employee;
 
-        TextView tvFirstName = holder.itemView.findViewById(R.id.textViewFirstName);
-        TextView tvLastName = holder.itemView.findViewById(R.id.textViewLastName);
-        TextView tvSalary = holder.itemView.findViewById(R.id.textViewSalary);
+        if (position % 2.0 > 0) {
+            holder.itemView.setBackgroundColor(0xF3E5F5FF);
+        }
+
+        TextView tvFirstName = holder.binding.textViewFirstName;
+        TextView tvLastName = holder.binding.textViewLastName;
+        TextView tvSalary = holder.binding.textViewSalary;
 
         tvFirstName.setText(employee.getFirstName());
         tvLastName.setText(employee.getLastName());
-        tvSalary.setText(String.valueOf(employee.getSalary()));
+        tvSalary.setText(" S/. " + String.valueOf(employee.getSalary()));
 
         if (employee.getSalary() >= 10000) {
             tvSalary.setTextColor(Color.RED);
         } else {
             tvSalary.setTextColor(Color.BLACK);
         }
+
+        holder.binding.buttonInformacion.setOnClickListener(view -> {
+            String id = employee.getId();
+            Log.d(TAG, "Presionando el empleado con id: " + id);
+
+            Intent intent = new Intent(context, EmployeeDetailActivity.class);
+            intent.putExtra("employee", employee);
+
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -72,22 +89,14 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         this.context = context;
     }
 
-    public class EmployeeViewHolder extends RecyclerView.ViewHolder {
+    public static class EmployeeViewHolder extends RecyclerView.ViewHolder {
 
+        IrvEmployeeBinding binding;
         Employee employee;
 
-        public EmployeeViewHolder(@NonNull View itemView) {
-            super(itemView);
-            Button button = itemView.findViewById(R.id.button2);
-            button.setOnClickListener(view -> {
-                String id = employee.getId();
-                Log.d(TAG, "Presionando el empleado con id: " + id);
-
-                Intent intent = new Intent(context,EmployeeDetailActivity.class);
-                intent.putExtra("employee", employee);
-
-                context.startActivity(intent);
-            });
+        public EmployeeViewHolder(IrvEmployeeBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }
